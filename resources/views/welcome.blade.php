@@ -16,7 +16,7 @@
     <body class="font-sans antialiased dark:bg-black dark:text-white/50">
         <div class="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
             <h2>Dialectb2b.com Admin</h2>
-            <p>Deploy test</p>
+            <p>Deploy test 111111</p>
             <ul>
                 @foreach($categories as $key => $category)
                     <li>{{ $category->name }}</li>
