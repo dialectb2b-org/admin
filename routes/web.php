@@ -33,6 +33,9 @@ use App\Http\Controllers\CustomerSupport\AppFaqCategoriesController;
 use App\Http\Controllers\CustomerSupport\AppFaqController;
 use App\Http\Controllers\CustomerSupport\NotificationController;
 
+use App\Models\SubCategory;
+use GuzzleHttp\Client;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -166,6 +169,34 @@ Route::group(['middleware' => ['auth']], function() {
           Route::get('user-agreement', [ContentController::class,'userAgreement'])->name('user-agreement');
           Route::post('user-agreement/save', [ContentController::class,'saveUserAgreement'])->name('save-user-agreement');
           Route::resource('notifications',NotificationController::class);
+          
+          
+          Route::get('update-keywords-api', function(){
+            SubCategory::chunk(1000,function($subcategories){
+               foreach($subcategories as $subcategory){ 
+                  $data = [
+                     "id" => $subcategory->id,
+                     "name" => $subcategory->name,
+                     "code" => $subcategory->code,
+                     "status" => 1,
+                     "keywords" => $subcategory->id,
+                     "price" => $subcategory->price,
+                     "created_at" => $subcategory->created_at->toIso8601String(), // Convert to ISO 8601 string
+                     "updated_at" => $subcategory->updated_at->toIso8601String(), // Convert to ISO 8601 string
+                     "sub_keywords" => $subcategory->sub_keywords->pluck('keyword')->toArray()
+                  ];
+                  $client = new Client();
+                  // Send the request to MeiliSearch
+                  $response = $client->request('PUT', 'https://search.dialectb2b.com/indexes/sub_categories/documents', [
+                     'headers' => [
+                        'Content-Type' => 'application/json',
+                        'Authorization' => 'Bearer b658c039e6136a82cd7a61e9fa3e0fc384129c8d4321b72529a0af01bd178b2b',
+                     ],
+                     'json' => [$data] // Pass an array containing the data
+                  ]);
+               }
+            });
+          });
 
 });
 
