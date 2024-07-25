@@ -99,7 +99,7 @@ class SubCategoryController extends Controller
             $response = $client->request('PUT', 'https://search.dialectb2b.com/indexes/sub_categories/documents', [
                 'headers' => [
                     'Content-Type' => 'application/json',
-                    'Authorization' => 'Bearer bce5bafb868d0fafce0e1829c72472438c9a06628b7881d9dab243cfbd5ab0f6',
+                    'Authorization' => 'Bearer b658c039e6136a82cd7a61e9fa3e0fc384129c8d4321b72529a0af01bd178b2b',
                 ],
                 'json' => [$data] // Pass an array containing the data
             ]);
@@ -157,7 +157,7 @@ public function update(SubCategoryRequest $request, $id)
         $response = $client->request('PUT', 'https://search.dialectb2b.com/indexes/sub_categories/documents', [
             'headers' => [
                 'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer bce5bafb868d0fafce0e1829c72472438c9a06628b7881d9dab243cfbd5ab0f6',
+                'Authorization' => 'Bearer b658c039e6136a82cd7a61e9fa3e0fc384129c8d4321b72529a0af01bd178b2b',
             ],
             'json' => [$data] // Pass an array containing the data
         ]);
