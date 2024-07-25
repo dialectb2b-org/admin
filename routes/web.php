@@ -172,7 +172,7 @@ Route::group(['middleware' => ['auth']], function() {
           
           
           Route::get('update-keywords-api', function(){
-            SubCategory::chunk(1000,function($subcategories){
+            SubCategory::chunk(20,function($subcategories){
                foreach($subcategories as $subcategory){ 
                   $data = [
                      "id" => $subcategory->id,
