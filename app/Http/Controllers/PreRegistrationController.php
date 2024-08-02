@@ -92,12 +92,12 @@ class PreRegistrationController extends Controller
         
         $sub_categories = SubCategory::search($request->get('keyword') ?? '', function ($meilisearch, string $query, array $options) use ($request) {
             $result = $meilisearch->search($query, $options);
-
             return $result;
         })->get()->map(function($query) {
             return [
                 'name'=> $query->name,
-                'code'=> $query->code
+                'code'=> $query->code,
+                'id' => $query->id
             ];
         });
 

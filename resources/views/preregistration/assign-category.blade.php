@@ -315,10 +315,9 @@ $(document).ready(function() {
                             $("#selected-list").html( '<div class="d-flex justify-content-center"><div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span></div></div>');
                         },
                         success: function(res) {
+                        console.log(res);
                             $("#selected-list").empty();
                             $.each(res, function(key, value) {
-                                var name = res[key].service.name.charAt(0);
-                                let letter = name.toUpperCase();
                                 $("#selected-list").append('<li class="list-group-item" data-id="' + res[key].service.id + '" data-name="' + res[key].service.name +'">' + res[key].service.name + '</li>');
                             });
                         }
