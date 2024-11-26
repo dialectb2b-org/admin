@@ -30,6 +30,7 @@ deploy:
 
     # ADJUSTING PERMISSIONS
 
+    - ssh -i /tmp/ssh_private_key.pem root@$EC2_IP 'chown -R www-data:www-data /var/www/html/'
     - ssh -i /tmp/ssh_private_key.pem root@$EC2_IP 'chown -R www-data:www-data /var/www/html/*'
 
     
