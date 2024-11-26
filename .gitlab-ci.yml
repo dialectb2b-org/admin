@@ -1,0 +1,43 @@
+stages:
+  - deploy
+
+# Define the deploy job
+deploy:
+  stage: deploy
+  
+  script:
+    # LOGIN
+    - eval $(ssh-agent -s)  
+    - echo "$SSH_PRIVATE_KEY" > /tmp/ssh_private_key.pem 
+    - chmod 600 /tmp/ssh_private_key.pem
+    - ssh-add /tmp/ssh_private_key.pem
+  
+    
+    
+    - mkdir -p ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+
+    # PULL CODE 
+    - git pull origin qa
+    - ls
+
+    # INSTALL RSYNC
+    
+    - apt update && apt install -y rsync
+
+    # RSYNC to server
+    - rsync -avz -e "ssh -i /tmp/ssh_private_key.pem" --exclude=".git" . root@$EC2_IP:/var/www/html/admin-qa-dialect/
+
+    # ADJUSTING PERMISSIONS
+
+    - ssh -i /tmp/ssh_private_key.pem root@$EC2_IP 'chown -R www-data:www-data /var/www/html/*'
+
+    
+    # RESTART WEB SERVER
+    
+    - ssh -i /tmp/ssh_private_key.pem root@$EC2_IP '/etc/init.d/apache2 restart'
+
+    # RUN Pipeline
+   
+  only:
+    - qa 
